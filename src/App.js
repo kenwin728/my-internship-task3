@@ -53,10 +53,11 @@ function App() {
         {isDeleteModalOpen && <DeleteModal />}
         {isUpdateModalOpen && <UpdateModal />}
         {isViewModalOpen && <ViewModal />}
+        <h1 className="text-5xl">Table App</h1>
         <div className="py-4 px-7 w-full">
           <div className="flex flex-row items-center space-x-4">
             <input
-              className="text-base border"
+              className="text-base border hover:border-black pl-1"
               placeholder="Search by name"
               value={searchTerm}
               onChange={(e) => {
