@@ -79,7 +79,7 @@ export const MySelect = ({ label, ...props }) => {
   );
 };
 
-const CreateModal = () => {
+const CreateModal = ({ uniqueCities, handleSortByCityChange }) => {
   const dispatch = useDispatch();
   return (
     <div className="flex items-center justify-center fixed bg-black bg-opacity-70 z-10 w-full h-full overflow-auto">
@@ -117,6 +117,9 @@ const CreateModal = () => {
               birthDate: Yup.string().required("Required"),
             })}
             onSubmit={(values, { setSubmitting, resetForm }) => {
+              if (!uniqueCities.includes(values.city)) {
+                handleSortByCityChange(values.city);
+              }
               dispatch(addData(values));
               setSubmitting(false);
               resetForm();

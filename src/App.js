@@ -18,13 +18,18 @@ function App() {
   const uniqueCities = [...new Set(cityArray)];
   const dispatch = useDispatch();
   const [searchTerm, setSearchTerm] = useState("");
+  const [isFirstDataChange, setIsFirstDataChange] = useState(true);
   const [sortByDate, setSortByDate] = useState(false);
-  const [sortByCity, setSortByCity] = useState(uniqueCities);
+  const [sortByCity, setSortByCity] = useState([]);
   const [filteredDatas, setFilteredDatas] = useState(datas);
   useEffect(() => {
     dispatch(getDatas());
   }, [dispatch]);
   useEffect(() => {
+    if (isFirstDataChange) {
+      setSortByCity(uniqueCities);
+      setIsFirstDataChange(false);
+    }
     let filtered = datas.filter((data) =>
       data.name.toLowerCase().startsWith(searchTerm.toLowerCase())
     );
@@ -36,6 +41,7 @@ function App() {
     }
     setFilteredDatas(filtered);
   }, [datas, searchTerm, sortByDate, sortByCity]);
+
   const handleSortByDateChange = () => {
     setSortByDate(!sortByDate);
   };
@@ -49,9 +55,25 @@ function App() {
   return (
     <section className="bg-gray-50">
       <div className="flex flex-col items-center justify-center px-6 py-8 min-h-screen relative overflow-x-auto">
-        {isCreateModalOpen && <CreateModal />}
-        {isDeleteModalOpen && <DeleteModal />}
-        {isUpdateModalOpen && <UpdateModal />}
+        {isCreateModalOpen && (
+          <CreateModal
+            uniqueCities={uniqueCities}
+            handleSortByCityChange={handleSortByCityChange}
+          />
+        )}
+        {isDeleteModalOpen && (
+          <DeleteModal
+            cityArray={cityArray}
+            sortByCity={sortByCity}
+            handleSortByCityChange={handleSortByCityChange}
+          />
+        )}
+        {isUpdateModalOpen && (
+          <UpdateModal
+            uniqueCities={uniqueCities}
+            handleSortByCityChange={handleSortByCityChange}
+          />
+        )}
         {isViewModalOpen && <ViewModal />}
         <h1 className="text-5xl">Table App</h1>
         <div className="py-4 px-7 w-full">

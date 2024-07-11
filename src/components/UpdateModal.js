@@ -7,7 +7,7 @@ import { closeUpdateModal } from "../features/modal/updateModalSlice";
 import { MyTextInput, MySelect, DatePickerField } from "./CreateModal";
 import { updateData } from "../features/data/dataSlice";
 
-const UpdateModal = () => {
+const UpdateModal = ({ uniqueCities, handleSortByCityChange }) => {
   const dispatch = useDispatch();
   const { datas, idToViewEditDelete } = useSelector((store) => store.data);
   const dataToBeUpdated = datas.find((data) => data.id === idToViewEditDelete);
@@ -47,6 +47,9 @@ const UpdateModal = () => {
               birthDate: Yup.string().required("Required"),
             })}
             onSubmit={(values, { setSubmitting, resetForm }) => {
+              if (!uniqueCities.includes(values.city)) {
+                handleSortByCityChange(values.city);
+              }
               dispatch(updateData(values));
               setSubmitting(false);
               resetForm();
